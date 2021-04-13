@@ -11,6 +11,7 @@ function HomeScreen() {
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text>Home!</Text>
       <Text></Text>
+      <Text></Text>
     </View>
   );
 }
