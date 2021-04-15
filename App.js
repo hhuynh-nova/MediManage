@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, SafeAreaView, ScrollView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import { FAB, Button, Card, Title, Paragraph } from "react-native-paper";
+import { FAB, Card, Title, Paragraph } from "react-native-paper";
 
 function HomeScreen() {
   return (
@@ -20,14 +20,11 @@ function MedicationsScreen() {
   for (let i = 0; i < 10; i++) {
     cards.push(
       <View style={styles.card}>
-        <Card>
+        <Card onPress={() => console.log("Edit Pressed")}>
           <Card.Content>
             <Title>Medication {i + 1}</Title>
             <Paragraph>Content {i + 1}</Paragraph>
           </Card.Content>
-          <Card.Actions>
-            <Button onPress={() => console.log("Edit Pressed")}>Edit</Button>
-          </Card.Actions>
         </Card>
       </View>
     );
@@ -51,14 +48,11 @@ function AppointmentsScreen() {
   for (let i = 0; i < 10; i++) {
     cards.push(
       <View style={styles.card}>
-        <Card>
+        <Card onPress={() => console.log("Edit Pressed")}>
           <Card.Content>
             <Title>Appointment {i + 1}</Title>
             <Paragraph>Content {i + 1}</Paragraph>
           </Card.Content>
-          <Card.Actions>
-            <Button onPress={() => console.log("Edit Pressed")}>Edit</Button>
-          </Card.Actions>
         </Card>
       </View>
     );
@@ -139,6 +133,7 @@ const styles = StyleSheet.create({
   },
   card: {
     paddingHorizontal: 10,
+    paddingTop: 3,
     paddingBottom: 5,
     justifyContent: "flex-start",
     alignSelf: "stretch",
