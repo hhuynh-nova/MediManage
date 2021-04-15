@@ -1,10 +1,10 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, ScrollView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import { FAB } from "react-native-paper";
+import { FAB, Button, Card, Title, Paragraph } from "react-native-paper";
 
 function HomeScreen() {
   return (
@@ -15,28 +15,64 @@ function HomeScreen() {
 }
 
 function MedicationsScreen() {
+  var cards = [];
+
+  for (let i = 0; i < 10; i++) {
+    cards.push(
+      <View style={styles.card}>
+        <Card>
+          <Card.Content>
+            <Title>Medication {i + 1}</Title>
+            <Paragraph>Content {i + 1}</Paragraph>
+          </Card.Content>
+          <Card.Actions>
+            <Button onPress={() => console.log("Edit Pressed")}>Edit</Button>
+          </Card.Actions>
+        </Card>
+      </View>
+    );
+  }
+
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Medications!</Text>
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={{ marginTop: 28 }}>{cards}</ScrollView>
       <FAB
         style={styles.fab}
         icon="plus"
-        onPress={() => console.log("Pressed")}
+        onPress={() => console.log("Fab Pressed")}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
 function AppointmentsScreen() {
+  var cards = [];
+
+  for (let i = 0; i < 10; i++) {
+    cards.push(
+      <View style={styles.card}>
+        <Card>
+          <Card.Content>
+            <Title>Appointment {i + 1}</Title>
+            <Paragraph>Content {i + 1}</Paragraph>
+          </Card.Content>
+          <Card.Actions>
+            <Button onPress={() => console.log("Edit Pressed")}>Edit</Button>
+          </Card.Actions>
+        </Card>
+      </View>
+    );
+  }
+
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Appointments!</Text>
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={{ marginTop: 28 }}>{cards}</ScrollView>
       <FAB
         style={styles.fab}
         icon="plus"
-        onPress={() => console.log("Pressed")}
+        onPress={() => console.log("Fab Pressed")}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -95,5 +131,16 @@ const styles = StyleSheet.create({
     margin: 20,
     right: 0,
     bottom: 10,
+  },
+  container: {
+    flex: 1,
+    paddingTop: StatusBar.currentHeight,
+    flexDirection: "column",
+  },
+  card: {
+    paddingHorizontal: 10,
+    paddingBottom: 5,
+    justifyContent: "flex-start",
+    alignSelf: "stretch",
   },
 });
