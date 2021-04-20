@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, SafeAreaView, ScrollView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -15,10 +15,10 @@ function HomeScreen() {
 }
 
 function MedicationsScreen() {
-  var cards = [];
+  var medCards = [];
 
   for (let i = 0; i < 10; i++) {
-    cards.push(
+    medCards.push(
       <View style={styles.card}>
         <Card onPress={() => console.log("Edit Pressed")}>
           <Card.Content>
@@ -32,7 +32,7 @@ function MedicationsScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={{ marginTop: 28 }}>{cards}</ScrollView>
+      <ScrollView style={{ marginTop: 28 }}>{medCards}</ScrollView>
       <FAB
         style={styles.fab}
         icon="plus"
@@ -80,16 +80,26 @@ function MedicationForm() {
       />
     </form>
   )
-  
-
-    
-
 }
+
+function CreateAppointmentsCard(aptCards) {
+  aptCards.push(
+    <View style={styles.card}>
+      <Card onPress={() => console.log("Edit Pressed")}>
+        <Card.Content>
+          <Title>Appointment 0</Title>
+          <Paragraph>Content</Paragraph>
+        </Card.Content>
+      </Card>
+    </View>
+  );
+}
+
 function AppointmentsScreen() {
-  var cards = [];
+  var aptCards = [];
 
   for (let i = 0; i < 10; i++) {
-    cards.push(
+    aptCards.push(
       <View style={styles.card}>
         <Card onPress={() => console.log("Edit Pressed")}>
           <Card.Content>
@@ -103,11 +113,11 @@ function AppointmentsScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={{ marginTop: 28 }}>{cards}</ScrollView>
+      <ScrollView style={{ marginTop: 28 }}>{aptCards}</ScrollView>
       <FAB
         style={styles.fab}
         icon="plus"
-        onPress={() => console.log("Fab Pressed")}
+        onPress={() => CreateAppointmentsCard(aptCards)}
       />
     </SafeAreaView>
   );
