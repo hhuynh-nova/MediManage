@@ -42,6 +42,49 @@ function MedicationsScreen() {
   );
 }
 
+function AddMedication() {
+
+}
+
+function MedicationForm() {
+  const [name, setName] = useState();
+  const [dose, setDose] = useState();
+  const handleSubmit = (e) => {      
+    addMedication([name, dose])
+    e.preventDefault();
+  }
+  return (
+    <form onSubmit={e => { handleSubmit(e) }}>
+      <label>Medication:</label>
+      <label>Name:</label>
+      <br />
+      <input 
+        name='name' 
+        type='text' 
+        value={name}
+        onChange={e => setName(e.target.value)}
+      />
+      <br />
+      <label>Dose:</label>
+      <br />
+      <input
+        name='dose' 
+        type='text'
+        value={date}
+        onChange={e => setDose(e.target.value)}
+      />
+      <br/>
+      <input 
+        type='submit' 
+        value='Add Log' 
+      />
+    </form>
+  )
+  
+
+    
+
+}
 function AppointmentsScreen() {
   var cards = [];
 
