@@ -42,44 +42,134 @@ function MedicationsScreen() {
   );
 }
 
-function AddMedication() {
-
-}
-
 function MedicationForm() {
-  const [name, setName] = useState();
-  const [dose, setDose] = useState();
-  const handleSubmit = (e) => {      
-    addMedication([name, dose])
-    e.preventDefault();
-  }
+  const { 
+    control, 
+    handleSubmit, 
+    formState: { errors } 
+  } = useForm();
+  const onSubmit = data => console.log(data);
+
   return (
-    <form onSubmit={e => { handleSubmit(e) }}>
-      <label>Medication:</label>
-      <label>Name:</label>
-      <br />
-      <input 
-        name='name' 
-        type='text' 
-        value={name}
-        onChange={e => setName(e.target.value)}
+    <View>
+      <Text></Text>
+      <Text>NEW MEDICATION </Text>
+      <Text></Text>
+      <Text></Text>
+      <Text>Medication:</Text>
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.container2}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+          />
+        )}
+        name="medication"
+        rules={{ required: true }}
+        defaultValue=""
       />
-      <br />
-      <label>Dose:</label>
-      <br />
-      <input
-        name='dose' 
-        type='text'
-        value={date}
-        onChange={e => setDose(e.target.value)}
+      {errors.PerscriptionName && <Text>This is required.</Text>}
+
+      <Text>Perscribing Doctor:</Text>
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.container2}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+          />
+        )}
+        name="pDoctor"
+        defaultValue=""
       />
-      <br/>
-      <input 
-        type='submit' 
-        value='Add Log' 
+
+      <Text>Dose:</Text>
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.container2}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+          />
+        )}
+        name="Dose"
+        defaultValue=""
       />
-    </form>
-  )
+      {errors.Dose && <Text>This is required.</Text>}
+
+      <Text>When to take medication:</Text>
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.container2}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+          />
+        )}
+        name="Time"
+        defaultValue=""
+      />
+      {errors.Time && <Text>This is required.</Text>}
+
+      <Text>Instructions:</Text>
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.container2}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+          />
+        )}
+        name="instructions"
+        defaultValue=""
+      />
+
+      <Text>Refill Date:</Text>
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.container2}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+          />
+        )}
+        name="refill"
+        defaultValue=""
+      />
+
+      <Text>Notes:</Text>
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.container2}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+          />
+        )}
+        name="Notes"
+        defaultValue=""
+      />
+
+      <Button title="Save" onPress={
+        handleSubmit(onSubmit)
+        } />
+    </View>
+  );
 }
 
 function CreateAppointmentsCard(aptCards) {
@@ -121,6 +211,137 @@ function AppointmentsScreen() {
       />
     </SafeAreaView>
   );
+}
+
+function AppointmentForm() {
+  const { 
+    control, 
+    handleSubmit, 
+    formState: { errors } 
+  } = useForm();
+  const onSubmit = data => console.log(data);
+
+  return (
+    <View>
+      <Text></Text>
+      <Text>NEW APPOINTMENT</Text>
+      <Text></Text>
+      <Text></Text>
+      <Text>Doctor:</Text>
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.container2}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+          />
+        )}
+        name="doctor"
+        rules={{ required: true }}
+        defaultValue=""
+      />
+      {errors.doctorName && <Text>This is required.</Text>}
+
+      <Text>Field / Specialty:</Text>
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.container2}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+          />
+        )}
+        name="Specialty"
+        defaultValue=""
+      />
+
+      <Text>Date of Upcoming Appointment:</Text>
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.container2}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+          />
+        )}
+        name="Date"
+        defaultValue=""
+      />
+      {errors.Date && <Text>This is required.</Text>}
+
+      <Text>Time:</Text>
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.container2}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+          />
+        )}
+        name="Time"
+        defaultValue=""
+      />
+      {errors.Time && <Text>This is required.</Text>}
+
+      <Text>Location:</Text>
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.container2}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+          />
+        )}
+        name="Location"
+        defaultValue=""
+      />
+
+      <Text>Phone:</Text>
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.container2}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+          />
+        )}
+        name="Phone"
+        defaultValue=""
+      />
+
+      <Text>Notes:</Text>
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.container2}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+          />
+        )}
+        name="Notes"
+        defaultValue=""
+      />
+
+      <Button title="Save" onPress={
+        handleSubmit(onSubmit)
+        } />
+    </View>
+  );
+
 }
 
 const Tab = createBottomTabNavigator();
