@@ -223,10 +223,19 @@ function AppointmentsScreen() {
       <FAB
         style={styles.fab}
         icon="plus"
-        onPress={() => CreateAppointmentsCard(aptCards)}
+        onPress={() => 
+
+          CreateAppointmentsCard(aptCards)}
       />
     </SafeAreaView>
   );
+}
+
+function setAppointmentInfo(data) {
+  data = JSON.stringify(data)
+  AsyncStorage.setItem('AppointmentDataDict', data);
+  console.log(data);
+  // data is datatype ReadableNativeMap
 }
 
 function AppointmentForm() {
@@ -235,7 +244,9 @@ function AppointmentForm() {
     handleSubmit, 
     formState: { errors } 
   } = useForm();
-  const onSubmit = data => console.log(data);
+  const onSubmit = data => setAppointmentInfo(data)
+
+  
 
   return (
     <View>
@@ -287,6 +298,7 @@ function AppointmentForm() {
           />
         )}
         name="Date"
+        rules={{required: true}}
         defaultValue=""
       />
       {errors.Date && <Text>This is required.</Text>}
@@ -303,6 +315,7 @@ function AppointmentForm() {
           />
         )}
         name="Time"
+        rules={{required: true}}
         defaultValue=""
       />
       {errors.Time && <Text>This is required.</Text>}
@@ -357,7 +370,6 @@ function AppointmentForm() {
         } />
     </View>
   );
-
 }
 
 const Tab = createBottomTabNavigator();
