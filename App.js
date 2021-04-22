@@ -5,6 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { FAB, Card, Title, Paragraph } from "react-native-paper";
+import { useForm, Controller } from "react-hook-form";
 
 function HomeScreen() {
   return (
