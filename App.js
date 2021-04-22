@@ -1,17 +1,32 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { StyleSheet, Text, View, SafeAreaView, ScrollView } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, Button, TextInput } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { FAB, Card, Title, Paragraph } from "react-native-paper";
+import call from "react-native-phone-call";
+import SwipeButton from "rn-swipe-button";
 
 function HomeScreen() {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text>Home!</Text>
+      <View style={styles.buttonContainer}>
+        <Button onPress={() => { this.Call() }} style={{ borderWidth: 1 }} title="Call 911" />
+      </View>
     </View>
   );
+}
+
+function Call() {
+    console.log("Call called");
+    const args = {
+        number: '9085147186',
+        prompt: false // Optional boolean property. Determines if the user should be prompt prior to the call 
+      }
+    
+    call(args).catch(console.error);
 }
 
 function MedicationsScreen() {
@@ -31,7 +46,7 @@ function MedicationsScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container}> 
       <ScrollView style={{ marginTop: 28 }}>{medCards}</ScrollView>
       <FAB
         style={styles.fab}
@@ -43,7 +58,7 @@ function MedicationsScreen() {
 }
 
 function AddMedication() {
-
+    
 }
 
 function MedicationForm() {
@@ -190,5 +205,10 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     justifyContent: "flex-start",
     alignSelf: "stretch",
+  },
+  buttonContainer: {
+    backgroundColor: 'lightgray',
+    margin: 30,
+    borderRadius: 20,
   },
 });
