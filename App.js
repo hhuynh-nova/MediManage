@@ -1,6 +1,6 @@
-import { StatusBar } from "expo-status-bar";
+//import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, Button, TextInput } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, Button, TextInput, StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
@@ -13,12 +13,24 @@ import { createStackNavigator } from '@react-navigation/stack';
 //create function that returns a stack nav ( first content is the appt cards )
 
 function HomeScreen() {
+
+  const defaultStatusMessage = 'swipe status appears here';
+
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <SwipeButton
+        height={75} width={375}
+        onSwipeSuccess={() =>
+            Call()
+        }
+      
+      />
+      
       <Text>Home!</Text>
-      <View style={styles.buttonContainer}>
-        <Button onPress={() => { this.Call() }} style={{ borderWidth: 1 }} title="Call 911" />
-      </View>
+
+
+      
+
     </View>
   );
 }
