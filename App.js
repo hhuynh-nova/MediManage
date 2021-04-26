@@ -33,7 +33,7 @@ function Call() {
     call(args).catch(console.error);
 }
 
-function MedicationsScreen() {
+function MedicationsScreen({navigation}) {
   var medCards = [];
 
   for (let i = 0; i < 10; i++) {
@@ -55,13 +55,13 @@ function MedicationsScreen() {
       <FAB
         style={styles.fab}
         icon="plus"
-        onPress={() => console.log("Fab Pressed")}
+        onPress={() => navigation.navigate('Add a New Medication')}
       />
     </SafeAreaView>
   );
 }
 
-function SetMedicationInfo(){
+function SetMedicationInfo(data){
   data = JSON.stringify(data);
   AsyncStorage.setItem('DataDict', data);
   console.log(data);
@@ -75,7 +75,7 @@ function MedicationForm() {
     formState: { errors } 
   } = useForm();
 
-  const onSubmit = data => setMedicationInfo(data)
+  const onSubmit = data => SetMedicationInfo(data)
   //   AsyncStorage.setItem('DataDict', data)
   //   console.log(data)
   // };
@@ -245,15 +245,15 @@ function AppointmentsScreen({navigation}) {
       <FAB
         style={styles.fab}
         icon="plus"
-        onPress={() => navigation.navigate('AForm')
+        onPress={() => navigation.navigate('Add a New Appointment')}
           //push to stack and go to appt form screen
-        }
+        
       />
     </SafeAreaView>
   );
 }
 
-function setAppointmentInfo(data) {
+function SetAppointmentInfo(data) {
   //const [data] = AppointmentForm();  //'data' is containing the view of the form
   data = JSON.stringify(data);
   var apptCardNum = 'AppointmentDataDict' + cardNum;
@@ -269,11 +269,7 @@ function AppointmentForm() {
     handleSubmit, 
     formState: { errors } 
   } = useForm();
-  const onSubmit = data => {//console.log(data)//
-  setAppointmentInfo(data);
-  //call navigation method to pop appt form off of appt stack to go back to appt card screen (bttm of appt stack)
-  //Done at the bottom within 'onpress'
-  }
+  const onSubmit = data => SetAppointmentInfo(data)
 
   return (
     //<Button title="Save" onPress={ () => Navigation.goBack() }/>
@@ -410,16 +406,16 @@ function AppointmentStackSetUp() {
   return(
     <AppointmentStack.Navigator initialRouteName="AppointmentCards"> 
       <AppointmentStack.Screen name = "AppointmentCards" component = {AppointmentsScreen}/>
-      <AppointmentStack.Screen name = "AForm" component = {AppointmentForm}/>
+      <AppointmentStack.Screen name = "Add a New Appointment" component = {AppointmentForm}/>
     </AppointmentStack.Navigator>
   );
 }
 
 function MedicationStackSetUp() {
   return(
-    <MedicationStack.Navigator initialRouteName="MedicationCards"> 
-      <MedicationStack.Screen name = "MedicationCards" component = {MedicationsScreen}/>
-      <MedicationStack.Screen name = "MForm" component = {MedicationForm}/>
+    <MedicationStack.Navigator initialRouteName="Medications"> 
+      <MedicationStack.Screen name = "Medications" component = {MedicationsScreen}/>
+      <MedicationStack.Screen name = "Add a New Medication" component = {MedicationForm}/>
     </MedicationStack.Navigator>
   );
 }
