@@ -25,7 +25,7 @@ function HomeScreen() {
         }
       
       />
-      
+
       <Text>Home!</Text>
 
 
@@ -36,13 +36,15 @@ function HomeScreen() {
 }
 
 function Call() {
-    console.log("Call called");
+    console.log("Called 911!");
+    /*
     const args = {
         number: '9085147186',
         prompt: false // Optional boolean property. Determines if the user should be prompt prior to the call 
       }
     
     call(args).catch(console.error);
+    */
 }
 
 function MedicationsScreen({navigation}) {
