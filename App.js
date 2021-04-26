@@ -8,6 +8,9 @@ import { FAB, Card, Title, Paragraph } from "react-native-paper";
 import call from "react-native-phone-call";
 import SwipeButton from "rn-swipe-button";
 import { useForm, Controller } from "react-hook-form";
+import { startDetecting } from "react-native/Libraries/Utilities/PixelRatio";
+import { createStackNavigator } from '@react-navigation/stack';
+//create function that returns a stack nav ( first content is the appt cards )
 
 function HomeScreen() {
   return (
@@ -58,18 +61,30 @@ function MedicationsScreen() {
   );
 }
 
+function SetMedicationInfo(){
+  data = JSON.stringify(data);
+  AsyncStorage.setItem('DataDict', data);
+  console.log(data);
+  // data is datatype ReadableNativeMap
+}
+
 function MedicationForm() {
   const { 
     control, 
     handleSubmit, 
     formState: { errors } 
   } = useForm();
-  const onSubmit = data => console.log(data);
+
+  const onSubmit = data => setMedicationInfo(data)
+  //   AsyncStorage.setItem('DataDict', data)
+  //   console.log(data)
+  // };
+  
 
   return (
     <View>
       <Text></Text>
-      <Text>NEW MEDICATION </Text>
+      <Text>NEW MEDICATION</Text>
       <Text></Text>
       <Text></Text>
       <Text>Medication:</Text>
@@ -83,12 +98,9 @@ function MedicationForm() {
             value={value}
           />
         )}
-        name="medication"
-        rules={{ required: true }}
+        name="Medication"
         defaultValue=""
       />
-      {errors.PerscriptionName && <Text>This is required.</Text>}
-
       <Text>Perscribing Doctor:</Text>
       <Controller
         control={control}
@@ -100,9 +112,11 @@ function MedicationForm() {
             value={value}
           />
         )}
-        name="pDoctor"
+        name="doctor"
+        rules={{ required: true }}
         defaultValue=""
       />
+      {errors.doctorName && <Text>This is required.</Text>}
 
       <Text>Dose:</Text>
       <Controller
@@ -118,9 +132,8 @@ function MedicationForm() {
         name="Dose"
         defaultValue=""
       />
-      {errors.Dose && <Text>This is required.</Text>}
 
-      <Text>When to take medication:</Text>
+      <Text>Time:</Text>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -132,24 +145,10 @@ function MedicationForm() {
           />
         )}
         name="Time"
+        rules={{required: true}}
         defaultValue=""
       />
-      {errors.Time && <Text>This is required.</Text>}
-
-      <Text>Instructions:</Text>
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.container2}
-            onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            value={value}
-          />
-        )}
-        name="instructions"
-        defaultValue=""
-      />
+      {errors.Date && <Text>This is required.</Text>}
 
       <Text>Refill Date:</Text>
       <Controller
@@ -162,7 +161,24 @@ function MedicationForm() {
             value={value}
           />
         )}
-        name="refill"
+        name="Refill"
+        rules={{required: true}}
+        defaultValue=""
+      />
+      {errors.Refill && <Text>This is required.</Text>}
+
+      <Text>Pharmacy:</Text>
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.container2}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+          />
+        )}
+        name="Parma"
         defaultValue=""
       />
 
@@ -186,6 +202,7 @@ function MedicationForm() {
         } />
     </View>
   );
+
 }
 
 function CreateAppointmentsCard(aptCards) {
@@ -201,8 +218,13 @@ function CreateAppointmentsCard(aptCards) {
   );
 }
 
-function AppointmentsScreen() {
+var cardNum = 1;  //Globar varible to keep track of the number of cards
+
+//Appt screen/apptList with come fron appt stack nav always be the intial contents
+//Appt form will be pushed to stacked when + is pressed
+function AppointmentsScreen({navigation}) {
   var aptCards = [];
+  //const {navigate} = this.props.navigation;
 
   for (let i = 0; i < 10; i++) {
     aptCards.push(
@@ -223,17 +245,20 @@ function AppointmentsScreen() {
       <FAB
         style={styles.fab}
         icon="plus"
-        onPress={() => 
-
-          CreateAppointmentsCard(aptCards)}
+        onPress={() => navigation.navigate('AForm')
+          //push to stack and go to appt form screen
+        }
       />
     </SafeAreaView>
   );
 }
 
 function setAppointmentInfo(data) {
-  data = JSON.stringify(data)
-  AsyncStorage.setItem('AppointmentDataDict', data);
+  //const [data] = AppointmentForm();  //'data' is containing the view of the form
+  data = JSON.stringify(data);
+  var apptCardNum = 'AppointmentDataDict' + cardNum;
+  apptCardNum = JSON.stringify(apptCardNum);
+  AsyncStorage.setItem('dataDict', data);
   console.log(data);
   // data is datatype ReadableNativeMap
 }
@@ -244,11 +269,14 @@ function AppointmentForm() {
     handleSubmit, 
     formState: { errors } 
   } = useForm();
-  const onSubmit = data => setAppointmentInfo(data)
-
-  
+  const onSubmit = data => {//console.log(data)//
+  setAppointmentInfo(data);
+  //call navigation method to pop appt form off of appt stack to go back to appt card screen (bttm of appt stack)
+  //Done at the bottom within 'onpress'
+  }
 
   return (
+    //<Button title="Save" onPress={ () => Navigation.goBack() }/>
     <View>
       <Text></Text>
       <Text>NEW APPOINTMENT</Text>
@@ -365,14 +393,36 @@ function AppointmentForm() {
         defaultValue=""
       />
 
-      <Button title="Save" onPress={
-        handleSubmit(onSubmit)
-        } />
+      <Button title="Save" onPress={ () =>
+        {
+          handleSubmit(onSubmit)
+        }
+      }/>
     </View>
   );
 }
 
 const Tab = createBottomTabNavigator();
+const AppointmentStack = createStackNavigator();
+const MedicationStack = createStackNavigator();
+
+function AppointmentStackSetUp() {
+  return(
+    <AppointmentStack.Navigator initialRouteName="AppointmentCards"> 
+      <AppointmentStack.Screen name = "AppointmentCards" component = {AppointmentsScreen}/>
+      <AppointmentStack.Screen name = "AForm" component = {AppointmentForm}/>
+    </AppointmentStack.Navigator>
+  );
+}
+
+function MedicationStackSetUp() {
+  return(
+    <MedicationStack.Navigator initialRouteName="MedicationCards"> 
+      <MedicationStack.Screen name = "MedicationCards" component = {MedicationsScreen}/>
+      <MedicationStack.Screen name = "MForm" component = {MedicationForm}/>
+    </MedicationStack.Navigator>
+  );
+}
 
 export default function App() {
   return (
@@ -413,8 +463,9 @@ export default function App() {
         }}
       >
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Medications" component={MedicationsScreen} />
-        <Tab.Screen name="Appointments" component={AppointmentsScreen} />
+        <Tab.Screen name="Medications" component={MedicationStackSetUp} />
+        <Tab.Screen name="Appointments" component={AppointmentStackSetUp} />
+                                                   
       </Tab.Navigator>
     </NavigationContainer>
   );
