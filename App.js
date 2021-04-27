@@ -1,6 +1,15 @@
 //import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, Button, TextInput, StatusBar } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  ScrollView,
+  Button,
+  TextInput,
+  StatusBar,
+} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
@@ -9,35 +18,26 @@ import call from "react-native-phone-call";
 import SwipeButton from "rn-swipe-button";
 import { useForm, Controller } from "react-hook-form";
 import { startDetecting } from "react-native/Libraries/Utilities/PixelRatio";
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator } from "@react-navigation/stack";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { NavigationEvents } from "react-navigation";
 //create function that returns a stack nav ( first content is the appt cards )
 
 function HomeScreen() {
-
-  const defaultStatusMessage = 'swipe status appears here';
+  const defaultStatusMessage = "swipe status appears here";
 
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <SwipeButton
-        height={75} width={375}
-        onSwipeSuccess={() =>
-            Call()
-        }
-      
-      />
+      <SwipeButton height={75} width={375} onSwipeSuccess={() => Call()} />
 
       <Text>Home!</Text>
-
-
-      
-
     </View>
   );
 }
 
 function Call() {
-    console.log("Called 911!");
-    /*
+  console.log("Called 911!");
+  /*
     const args = {
         number: '9085147186',
         prompt: false // Optional boolean property. Determines if the user should be prompt prior to the call 
@@ -47,7 +47,7 @@ function Call() {
     */
 }
 
-function MedicationsScreen({navigation}) {
+function MedicationsScreen({ navigation }) {
   var medCards = [];
 
   for (let i = 0; i < 10; i++) {
@@ -64,36 +64,35 @@ function MedicationsScreen({navigation}) {
   }
 
   return (
-    <SafeAreaView style={styles.container}> 
+    <SafeAreaView style={styles.container}>
       <ScrollView style={{ marginTop: 28 }}>{medCards}</ScrollView>
       <FAB
         style={styles.fab}
         icon="plus"
-        onPress={() => navigation.navigate('Add a New Medication')}
+        onPress={() => navigation.navigate("Add a New Medication")}
       />
     </SafeAreaView>
   );
 }
 
-function SetMedicationInfo(data){
+function SetMedicationInfo(data) {
   data = JSON.stringify(data);
-  AsyncStorage.setItem('DataDict', data);
+  AsyncStorage.setItem("DataDict", data);
   console.log(data);
   // data is datatype ReadableNativeMap
 }
 
 function MedicationForm() {
-  const { 
-    control, 
-    handleSubmit, 
-    formState: { errors } 
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
   } = useForm();
 
-  const onSubmit = data => SetMedicationInfo(data)
+  const onSubmit = (data) => SetMedicationInfo(data);
   //   AsyncStorage.setItem('DataDict', data)
   //   console.log(data)
   // };
-  
 
   return (
     <View>
@@ -108,7 +107,7 @@ function MedicationForm() {
           <TextInput
             style={styles.container2}
             onBlur={onBlur}
-            onChangeText={value => onChange(value)}
+            onChangeText={(value) => onChange(value)}
             value={value}
           />
         )}
@@ -122,11 +121,11 @@ function MedicationForm() {
           <TextInput
             style={styles.container2}
             onBlur={onBlur}
-            onChangeText={value => onChange(value)}
+            onChangeText={(value) => onChange(value)}
             value={value}
           />
         )}
-        name="doctor"
+        name="Doctor"
         rules={{ required: true }}
         defaultValue=""
       />
@@ -139,7 +138,7 @@ function MedicationForm() {
           <TextInput
             style={styles.container2}
             onBlur={onBlur}
-            onChangeText={value => onChange(value)}
+            onChangeText={(value) => onChange(value)}
             value={value}
           />
         )}
@@ -154,12 +153,12 @@ function MedicationForm() {
           <TextInput
             style={styles.container2}
             onBlur={onBlur}
-            onChangeText={value => onChange(value)}
+            onChangeText={(value) => onChange(value)}
             value={value}
           />
         )}
         name="Time"
-        rules={{required: true}}
+        rules={{ required: true }}
         defaultValue=""
       />
       {errors.Date && <Text>This is required.</Text>}
@@ -171,12 +170,12 @@ function MedicationForm() {
           <TextInput
             style={styles.container2}
             onBlur={onBlur}
-            onChangeText={value => onChange(value)}
+            onChangeText={(value) => onChange(value)}
             value={value}
           />
         )}
         name="Refill"
-        rules={{required: true}}
+        rules={{ required: true }}
         defaultValue=""
       />
       {errors.Refill && <Text>This is required.</Text>}
@@ -188,7 +187,7 @@ function MedicationForm() {
           <TextInput
             style={styles.container2}
             onBlur={onBlur}
-            onChangeText={value => onChange(value)}
+            onChangeText={(value) => onChange(value)}
             value={value}
           />
         )}
@@ -203,7 +202,7 @@ function MedicationForm() {
           <TextInput
             style={styles.container2}
             onBlur={onBlur}
-            onChangeText={value => onChange(value)}
+            onChangeText={(value) => onChange(value)}
             value={value}
           />
         )}
@@ -211,12 +210,9 @@ function MedicationForm() {
         defaultValue=""
       />
 
-      <Button title="Save" onPress={
-        handleSubmit(onSubmit)
-        } />
+      <Button title="Save" onPress={handleSubmit(onSubmit)} />
     </View>
   );
-
 }
 
 function CreateAppointmentsCard(aptCards) {
@@ -232,15 +228,16 @@ function CreateAppointmentsCard(aptCards) {
   );
 }
 
-var cardNum = 1;  //Globar varible to keep track of the number of cards
+var cardNum = 0; //Globar varible to keep track of the number of cards
 
 //Appt screen/apptList with come fron appt stack nav always be the intial contents
 //Appt form will be pushed to stacked when + is pressed
-function AppointmentsScreen({navigation}) {
+function AppointmentsScreen({ navigation }) {
   var aptCards = [];
   //const {navigate} = this.props.navigation;
 
   for (let i = 0; i < 10; i++) {
+    console.log(AsyncStorage.getItem("AppointmentDataDict" + i));
     aptCards.push(
       <View style={styles.card}>
         <Card onPress={() => console.log("Edit Pressed")}>
@@ -259,9 +256,8 @@ function AppointmentsScreen({navigation}) {
       <FAB
         style={styles.fab}
         icon="plus"
-        onPress={() => navigation.navigate('Add a New Appointment')}
-          //push to stack and go to appt form screen
-        
+        onPress={() => navigation.navigate("Add a New Appointment")}
+        //push to stack and go to appt form screen
       />
     </SafeAreaView>
   );
@@ -269,21 +265,25 @@ function AppointmentsScreen({navigation}) {
 
 function SetAppointmentInfo(data) {
   //const [data] = AppointmentForm();  //'data' is containing the view of the form
+  cardNum++;
   data = JSON.stringify(data);
-  var apptCardNum = 'AppointmentDataDict' + cardNum;
+  var apptCardNum = "AppointmentDataDict" + cardNum;
   apptCardNum = JSON.stringify(apptCardNum);
-  AsyncStorage.setItem('dataDict', data);
+  AsyncStorage.setItem(apptCardNum, data);
   console.log(data);
   // data is datatype ReadableNativeMap
 }
 
-function AppointmentForm() {
-  const { 
-    control, 
-    handleSubmit, 
-    formState: { errors } 
+function AppointmentForm({ navigation }) {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
   } = useForm();
-  const onSubmit = data => SetAppointmentInfo(data)
+  const onSubmit = (data) => {
+    SetAppointmentInfo(data);
+    navigation.goBack();
+  };
 
   return (
     //<Button title="Save" onPress={ () => Navigation.goBack() }/>
@@ -299,11 +299,11 @@ function AppointmentForm() {
           <TextInput
             style={styles.container2}
             onBlur={onBlur}
-            onChangeText={value => onChange(value)}
+            onChangeText={(value) => onChange(value)}
             value={value}
           />
         )}
-        name="doctor"
+        name="Doctor"
         rules={{ required: true }}
         defaultValue=""
       />
@@ -316,7 +316,7 @@ function AppointmentForm() {
           <TextInput
             style={styles.container2}
             onBlur={onBlur}
-            onChangeText={value => onChange(value)}
+            onChangeText={(value) => onChange(value)}
             value={value}
           />
         )}
@@ -331,12 +331,12 @@ function AppointmentForm() {
           <TextInput
             style={styles.container2}
             onBlur={onBlur}
-            onChangeText={value => onChange(value)}
+            onChangeText={(value) => onChange(value)}
             value={value}
           />
         )}
         name="Date"
-        rules={{required: true}}
+        rules={{ required: true }}
         defaultValue=""
       />
       {errors.Date && <Text>This is required.</Text>}
@@ -348,12 +348,12 @@ function AppointmentForm() {
           <TextInput
             style={styles.container2}
             onBlur={onBlur}
-            onChangeText={value => onChange(value)}
+            onChangeText={(value) => onChange(value)}
             value={value}
           />
         )}
         name="Time"
-        rules={{required: true}}
+        rules={{ required: true }}
         defaultValue=""
       />
       {errors.Time && <Text>This is required.</Text>}
@@ -365,7 +365,7 @@ function AppointmentForm() {
           <TextInput
             style={styles.container2}
             onBlur={onBlur}
-            onChangeText={value => onChange(value)}
+            onChangeText={(value) => onChange(value)}
             value={value}
           />
         )}
@@ -380,7 +380,7 @@ function AppointmentForm() {
           <TextInput
             style={styles.container2}
             onBlur={onBlur}
-            onChangeText={value => onChange(value)}
+            onChangeText={(value) => onChange(value)}
             value={value}
           />
         )}
@@ -395,7 +395,7 @@ function AppointmentForm() {
           <TextInput
             style={styles.container2}
             onBlur={onBlur}
-            onChangeText={value => onChange(value)}
+            onChangeText={(value) => onChange(value)}
             value={value}
           />
         )}
@@ -403,11 +403,7 @@ function AppointmentForm() {
         defaultValue=""
       />
 
-      <Button title="Save" onPress={ () =>
-        {
-          handleSubmit(onSubmit)
-        }
-      }/>
+      <Button title="Save" onPress={handleSubmit(onSubmit)} />
     </View>
   );
 }
@@ -417,19 +413,31 @@ const AppointmentStack = createStackNavigator();
 const MedicationStack = createStackNavigator();
 
 function AppointmentStackSetUp() {
-  return(
-    <AppointmentStack.Navigator initialRouteName="AppointmentCards"> 
-      <AppointmentStack.Screen name = "AppointmentCards" component = {AppointmentsScreen}/>
-      <AppointmentStack.Screen name = "Add a New Appointment" component = {AppointmentForm}/>
+  return (
+    <AppointmentStack.Navigator initialRouteName="AppointmentCards">
+      <AppointmentStack.Screen
+        name="AppointmentCards"
+        component={AppointmentsScreen}
+      />
+      <AppointmentStack.Screen
+        name="Add a New Appointment"
+        component={AppointmentForm}
+      />
     </AppointmentStack.Navigator>
   );
 }
 
 function MedicationStackSetUp() {
-  return(
-    <MedicationStack.Navigator initialRouteName="Medications"> 
-      <MedicationStack.Screen name = "Medications" component = {MedicationsScreen}/>
-      <MedicationStack.Screen name = "Add a New Medication" component = {MedicationForm}/>
+  return (
+    <MedicationStack.Navigator initialRouteName="Medications">
+      <MedicationStack.Screen
+        name="Medications"
+        component={MedicationsScreen}
+      />
+      <MedicationStack.Screen
+        name="Add a New Medication"
+        component={MedicationForm}
+      />
     </MedicationStack.Navigator>
   );
 }
@@ -475,7 +483,6 @@ export default function App() {
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Medications" component={MedicationStackSetUp} />
         <Tab.Screen name="Appointments" component={AppointmentStackSetUp} />
-                                                   
       </Tab.Navigator>
     </NavigationContainer>
   );
@@ -502,7 +509,7 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
   },
   buttonContainer: {
-    backgroundColor: 'lightgray',
+    backgroundColor: "lightgray",
     margin: 30,
     borderRadius: 20,
   },
