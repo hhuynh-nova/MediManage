@@ -65,7 +65,7 @@ function MedicationsScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={{ marginTop: 28 }}>{medCards}</ScrollView>
+      <ScrollView>{medCards}</ScrollView>
       <FAB
         style={styles.fab}
         icon="plus"
@@ -246,7 +246,7 @@ function AppointmentsScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={{ marginTop: 28 }}>{aptCards}</ScrollView>
+      <ScrollView>{aptCards}</ScrollView>
       <FAB
         style={styles.fab}
         icon="plus"
@@ -410,7 +410,7 @@ function AppointmentStackSetUp() {
   return (
     <AppointmentStack.Navigator initialRouteName="AppointmentCards">
       <AppointmentStack.Screen
-        name="AppointmentCards"
+        name="Appointment"
         component={AppointmentsScreen}
       />
       <AppointmentStack.Screen
