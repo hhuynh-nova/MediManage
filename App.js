@@ -244,14 +244,9 @@ function AppointmentsScreen({ navigation }) {
     });
   }
 
-
   return (
     <SafeAreaView style={styles.container}>
-        {useFocusEffect(
-          React.useCallback(() => {
-            <ScrollView style={{ marginTop: 28 }}>{aptCards}</ScrollView>;
-          })
-        )}
+      <ScrollView style={{ marginTop: 28 }}>{aptCards}</ScrollView>
       <FAB
         style={styles.fab}
         icon="plus"
