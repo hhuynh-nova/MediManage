@@ -253,7 +253,6 @@ function AppointmentsScreen({ navigation }) {
           </Card>
         </View>
       );
-      console.log(aptCards);
     });
   }
 
