@@ -10,7 +10,7 @@ import {
   TextInput,
   StatusBar,
 } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useFocusEffect } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { FAB, Card, Title, Paragraph } from "react-native-paper";
@@ -215,44 +215,43 @@ function MedicationForm() {
   );
 }
 
-function CreateAppointmentsCard(aptCards) {
-  aptCards.push(
-    <View style={styles.card}>
-      <Card onPress={() => console.log("Edit Pressed")}>
-        <Card.Content>
-          <Title>Appointment 0</Title>
-          <Paragraph>Content</Paragraph>
-        </Card.Content>
-      </Card>
-    </View>
-  );
-}
-
 var cardNum = 0; //Globar varible to keep track of the number of cards
 
 //Appt screen/apptList with come fron appt stack nav always be the intial contents
 //Appt form will be pushed to stacked when + is pressed
 function AppointmentsScreen({ navigation }) {
   var aptCards = [];
+  var data;
   //const {navigate} = this.props.navigation;
 
-  for (let i = 0; i < 10; i++) {
-    console.log(AsyncStorage.getItem("AppointmentDataDict" + i));
-    aptCards.push(
-      <View style={styles.card}>
-        <Card onPress={() => console.log("Edit Pressed")}>
-          <Card.Content>
-            <Title>Appointment {i + 1}</Title>
-            <Paragraph>Content {i + 1}</Paragraph>
-          </Card.Content>
-        </Card>
-      </View>
-    );
+  for (let i = 1; i <= 6; i++) {
+    var apptCardNum = "AppointmentDataDict" + i;
+    apptCardNum = JSON.stringify(apptCardNum);
+    AsyncStorage.getItem(apptCardNum).then((res) => {
+      data = JSON.parse(res);
+      console.log(data);
+      console.log(data["Doctor"]);
+      aptCards.push(
+        <View style={styles.card}>
+          <Card onPress={() => console.log("Edit Pressed")}>
+            <Card.Content>
+              <Title>{data["Doctor"]}</Title>
+              <Paragraph>{data["Date"]}</Paragraph>
+            </Card.Content>
+          </Card>
+        </View>
+      );
+    });
   }
+
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={{ marginTop: 28 }}>{aptCards}</ScrollView>
+        {useFocusEffect(
+          React.useCallback(() => {
+            <ScrollView style={{ marginTop: 28 }}>{aptCards}</ScrollView>;
+          })
+        )}
       <FAB
         style={styles.fab}
         icon="plus"
@@ -263,13 +262,13 @@ function AppointmentsScreen({ navigation }) {
   );
 }
 
-function SetAppointmentInfo(data) {
+async function SetAppointmentInfo(data) {
   //const [data] = AppointmentForm();  //'data' is containing the view of the form
   cardNum++;
   data = JSON.stringify(data);
   var apptCardNum = "AppointmentDataDict" + cardNum;
   apptCardNum = JSON.stringify(apptCardNum);
-  AsyncStorage.setItem(apptCardNum, data);
+  await AsyncStorage.setItem(apptCardNum, data);
   console.log(data);
   // data is datatype ReadableNativeMap
 }
