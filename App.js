@@ -10,7 +10,7 @@ import {
   TextInput,
   StatusBar,
 } from "react-native";
-import { NavigationContainer, useFocusEffect } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { FAB, Card, Title, Paragraph } from "react-native-paper";
