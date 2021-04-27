@@ -28,7 +28,7 @@ function HomeScreen() {
 
   return (
     
-      <View style={{ flex: 1, justifyContent: "flexed-start", alignItems: "center", padding: 50 }}>
+      <View style={{ flex: 1, justifyContent: "flex-start", alignItems: "center", padding: 50 }}>
         <SwipeButton 
           onSwipeSuccess={() => Call() }
           thumbIconComponent={phoneIcon}
@@ -421,7 +421,7 @@ function AppointmentStackSetUp() {
   return (
     <AppointmentStack.Navigator initialRouteName="AppointmentCards">
       <AppointmentStack.Screen
-        name="Appointment"
+        name="Appointments"
         component={AppointmentsScreen}
       />
       <AppointmentStack.Screen
