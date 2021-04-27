@@ -24,27 +24,38 @@ import { NavigationEvents } from "react-navigation";
 //create function that returns a stack nav ( first content is the appt cards )
 
 function HomeScreen() {
-  const defaultStatusMessage = "swipe status appears here";
+  const phoneIcon = () => <Ionicons name={"call"} size={40} color={"white"}/>;
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <SwipeButton height={75} width={375} onSwipeSuccess={() => Call()} />
-
-      <Text>Home!</Text>
-    </View>
+    
+      <View style={{ flex: 1, justifyContent: "flexed-start", alignItems: "center", padding: 50 }}>
+        <SwipeButton 
+          onSwipeSuccess={() => Call() }
+          thumbIconComponent={phoneIcon}
+          height={70} width={375}
+          title='Emergency Services'
+          railBackgroundColor='#dedede'
+          railFillBackgroundColor='#949494'
+          railFillBorderColor='#949494'
+          thumbIconBackgroundColor='#ff8400'
+          thumbIconBorderColor='#ff8400'
+        />     
+      </View>    
   );
 }
 
 function Call() {
-  console.log("Called 911!");
-  /*
+    const debug = true; // does not call phone number in debug mode
+
     const args = {
         number: '9085147186',
         prompt: false // Optional boolean property. Determines if the user should be prompt prior to the call 
       }
     
-    call(args).catch(console.error);
-    */
+    if(debug != true) {
+      call(args).catch(console.error);
+    }
+    console.log("Calling Emergency Services...");
 }
 
 function MedicationsScreen({ navigation }) {
