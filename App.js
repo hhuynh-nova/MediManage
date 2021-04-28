@@ -108,61 +108,66 @@ function MedicationForm() {
   return (
     <View>
       <Text></Text>
-      <Text>NEW MEDICATION</Text>
+      <Text style = {styles.title}>NEW MEDICATION</Text>
       <Text></Text>
       <Text></Text>
-      <Text>Medication:</Text>
+      <Text style = {styles.label}>Medication:</Text>
+      {errors.Medication && <Text>Medication Name is required.</Text>}
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            style={styles.container2}
+            style={styles.input}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
             value={value}
           />
         )}
         name="Medication"
-        defaultValue=""
-      />
-      <Text>Perscribing Doctor:</Text>
-      <Controller
-        control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
-            style={styles.container2}
-            onBlur={onBlur}
-            onChangeText={(value) => onChange(value)}
-            value={value}
-          />
-        )}
-        name="Doctor"
         rules={{ required: true }}
         defaultValue=""
       />
-      {errors.doctorName && <Text>This is required.</Text>}
-
-      <Text>Dose:</Text>
+      <Text style = {styles.label}>Perscribing Doctor:</Text>
+      {errors.doctorName && <Text>Perscribing doctor is required.</Text>}
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            style={styles.container2}
+            style={styles.input}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
             value={value}
           />
         )}
-        name="Dose"
+        name="doctorName"
+        rules={{ required: true }}
         defaultValue=""
       />
 
-      <Text>Time:</Text>
+      <Text style = {styles.label}>Dose:</Text>
+      {errors.dose && <Text>Dose is required.</Text>}
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            style={styles.container2}
+            style={styles.input}
+            onBlur={onBlur}
+            onChangeText={(value) => onChange(value)}
+            value={value}
+          />
+        )}
+        name="dose"
+        rules={{ required: true }}
+        defaultValue=""
+      />
+
+      <Text style = {styles.label}>Time:</Text>
+      {errors.Time && <Text>Time is required.</Text>}
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.input}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
             value={value}
@@ -172,14 +177,14 @@ function MedicationForm() {
         rules={{ required: true }}
         defaultValue=""
       />
-      {errors.Date && <Text>This is required.</Text>}
 
-      <Text>Refill Date:</Text>
+      <Text style = {styles.label}>Refill Date:</Text>
+      {errors.Refill && <Text>Refill Date is required.</Text>}
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            style={styles.container2}
+            style={styles.input}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
             value={value}
@@ -189,14 +194,13 @@ function MedicationForm() {
         rules={{ required: true }}
         defaultValue=""
       />
-      {errors.Refill && <Text>This is required.</Text>}
 
-      <Text>Pharmacy:</Text>
+      <Text style = {styles.label}>Pharmacy:</Text>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            style={styles.container2}
+            style={styles.input}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
             value={value}
@@ -206,12 +210,12 @@ function MedicationForm() {
         defaultValue=""
       />
 
-      <Text>Notes:</Text>
+      <Text style = {styles.label}>Notes:</Text>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            style={styles.container2}
+            style={styles.input}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
             value={value}
@@ -294,32 +298,32 @@ function AppointmentForm({ navigation }) {
     //<Button title="Save" onPress={ () => Navigation.goBack() }/>
     <View>
       <Text></Text>
-      <Text>NEW APPOINTMENT</Text>
+      <Text style = {styles.title}>NEW APPOINTMENT</Text>
       <Text></Text>
       <Text></Text>
-      <Text>Doctor:</Text>
+      <Text style = {styles.label}>Doctor:</Text>
+      {errors.doctorName && <Text>Doctor Name is required.</Text>}
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            style={styles.container2}
+            style={styles.input}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
             value={value}
           />
         )}
-        name="Doctor"
+        name="doctorName"
         rules={{ required: true }}
         defaultValue=""
       />
-      {errors.doctorName && <Text>This is required.</Text>}
 
-      <Text>Field / Specialty:</Text>
+      <Text style = {styles.label}>Field / Specialty:</Text>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            style={styles.container2}
+            style={styles.input}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
             value={value}
@@ -329,12 +333,13 @@ function AppointmentForm({ navigation }) {
         defaultValue=""
       />
 
-      <Text>Date of Upcoming Appointment:</Text>
+      <Text style = {styles.label}>Date of Upcoming Appointment:</Text>
+      {errors.Date && <Text>Date is required.</Text>}
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            style={styles.container2}
+            style={styles.input}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
             value={value}
@@ -344,14 +349,14 @@ function AppointmentForm({ navigation }) {
         rules={{ required: true }}
         defaultValue=""
       />
-      {errors.Date && <Text>This is required.</Text>}
 
-      <Text>Time:</Text>
+      <Text style = {styles.label}>Time:</Text>
+      {errors.Time && <Text>Time is required.</Text>}
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            style={styles.container2}
+            style={styles.input}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
             value={value}
@@ -361,14 +366,13 @@ function AppointmentForm({ navigation }) {
         rules={{ required: true }}
         defaultValue=""
       />
-      {errors.Time && <Text>This is required.</Text>}
 
-      <Text>Location:</Text>
+      <Text style = {styles.label}>Location:</Text>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            style={styles.container2}
+            style={styles.input}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
             value={value}
@@ -378,12 +382,12 @@ function AppointmentForm({ navigation }) {
         defaultValue=""
       />
 
-      <Text>Phone:</Text>
+      <Text style = {styles.label}>Phone:</Text>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            style={styles.container2}
+            style={styles.input}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
             value={value}
@@ -393,12 +397,12 @@ function AppointmentForm({ navigation }) {
         defaultValue=""
       />
 
-      <Text>Notes:</Text>
+      <Text style = {styles.label}>Notes:</Text>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
-            style={styles.container2}
+            style={styles.input}
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
             value={value}
@@ -408,7 +412,7 @@ function AppointmentForm({ navigation }) {
         defaultValue=""
       />
 
-      <Button title="Save" onPress={handleSubmit(onSubmit)} />
+      <Button title="Save" onPress={handleSubmit(onSubmit)} style={styles.buttonContainer}/>
     </View>
   );
 }
@@ -518,4 +522,25 @@ const styles = StyleSheet.create({
     margin: 30,
     borderRadius: 20,
   },
+  input: {
+    color: 'black',
+    fontSize: 15, 
+    borderColor: 'black',
+    borderWidth: 1,
+  },
+  label: {
+    color: 'red',
+    fontSize: 20, 
+    fontWeight: "bold",
+  },
+  title: {
+    color: 'red',
+    fontSize: 30, 
+    fontWeight: "bold",
+  },
+  button: {
+    backgroundColor: "red",
+    borderRadius: 10,
+    paddingVertical: 10,
+  }
 });
