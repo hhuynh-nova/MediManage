@@ -65,37 +65,75 @@ function Call() {
   console.log("Calling Emergency Services...");
 }
 
-function MedicationsScreen({ navigation }) {
-  var medCards = [];
+var medCardNum = 0; //Globar varible to keep track of the number of medication cards
 
-  for (let i = 0; i < 1; i++) {
-    medCards.push(
-      <View style={styles.card}>
-        <Card onPress={() => console.log("Edit Pressed")}>
-          <Card.Content>
-            <Title>Vitamin</Title>
-            <Paragraph>Daily</Paragraph>
-          </Card.Content>
-        </Card>
-      </View>
-    );
-  }
+function MedicationsScreen({ navigation }) {
+  const [dataSource, setDataSource] = useState([]);
+
+  useEffect(() => {
+    try {
+      AsyncStorage.getAllKeys().then((keys) => {
+        AsyncStorage.multiGet(keys).then((res) => {
+          var data = res;
+          setDataSource(data);
+        });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  const ItemView = (item, key) => {
+    const aptCard = "MedicationDataDict";
+    console.log(item[0]);
+    console.log(item[1]);
+
+    if (aptCard == item[0].split("~")[0]) {
+      medCardNum++;
+      return (
+        // Flat List Item
+        <View key={key} style={styles.card}>
+          <Card onPress={() => getItem(item)}>
+            <Card.Content>
+              <Title>{item[1]}</Title>
+              <Paragraph></Paragraph>
+            </Card.Content>
+          </Card>
+        </View>
+      );
+    }
+  };
+
+  const getItem = (item) => {
+    // Function for click on an item
+    alert(item[1]);
+  };
+
+  clearAsyncStorage = async () => {
+    AsyncStorage.clear();
+    aptCardNum = 0;
+    medCardNum = 0;
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>{medCards}</ScrollView>
+      <ScrollView>{dataSource.map(ItemView)}</ScrollView>
+      <Button title='Clear Async' onPress={clearAsyncStorage}></Button>
       <FAB
         style={styles.fab}
         icon="plus"
         onPress={() => navigation.navigate("Add a New Medication")}
+        //push to stack and go to appt form screen
       />
     </SafeAreaView>
   );
 }
 
 function SetMedicationInfo(data) {
+  medCardNum++;
   data = JSON.stringify(data);
-  AsyncStorage.setItem("DataDict", data);
+  var medKey = "MedicationDataDict~" + medCardNum;
+  AsyncStorage.setItem(medKey, data);
   console.log(data);
   // data is datatype ReadableNativeMap
 }
@@ -150,7 +188,7 @@ function MedicationForm({ navigation }) {
             value={value}
           />
         )}
-        name="doctorName"
+        name="Doctor"
         rules={{ required: true }}
         defaultValue=""
       />
@@ -217,7 +255,7 @@ function MedicationForm({ navigation }) {
             value={value}
           />
         )}
-        name="Parma"
+        name="Pharmacy"
         defaultValue=""
       />
 
@@ -241,58 +279,62 @@ function MedicationForm({ navigation }) {
   );
 }
 
-var aptFinalCards = [];
-
-async function AppointmentCardList() {
-  for (let i = 1; i <= cardNum; i++) {
-    var apptCardNum = "AppointmentDataDict" + i;
-    apptCardNum = JSON.stringify(apptCardNum);
-    await AsyncStorage.getItem(apptCardNum).then((res) => {
-      var data = JSON.parse(res);
-      console.log(data);
-      console.log(data["Doctor"]);
-      aptFinalCards.push(
-        <View style={styles.card}>
-          <Card onPress={() => console.log("Edit Pressed")}>
-            <Card.Content>
-              <Title>{data["Doctor"]}</Title>
-              <Paragraph>{data["Date"]}</Paragraph>
-            </Card.Content>
-          </Card>
-        </View>
-      );
-    });
-  }
-}
-
-var cardNum = 6; //Globar varible to keep track of the number of cards
+var aptCardNum = 0; //Globar varible to keep track of the number of cards
 
 //Appt screen/apptList with come fron appt stack nav always be the intial contents
 //Appt form will be pushed to stacked when + is pressed
 function AppointmentsScreen({ navigation }) {
-  const [count, setCount] = useState(0);
-  const [aptCards, setCards] = useState([]);
+  const [dataSource, setDataSource] = useState([]);
 
   useEffect(() => {
-    console.log("Refresh");
-    setCards(aptFinalCards);
-    console.log(aptCards);
-  }, [count]);
+    try {
+      AsyncStorage.getAllKeys().then((keys) => {
+        AsyncStorage.multiGet(keys).then((res) => {
+          var data = res;
+          setDataSource(data);
+        });
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
 
-  
+  const ItemView = (item, key) => {
+    const aptCard = "AppointmentDataDict";
+    console.log(item[0]);
+    console.log(item[1]);
+
+    if (aptCard == item[0].split("~")[0]) {
+      aptCardNum++;
+      return (
+        // Flat List Item
+        <View key={key} style={styles.card}>
+          <Card onPress={() => getItem(item)}>
+            <Card.Content>
+              <Title>{item[1]}</Title>
+              <Paragraph></Paragraph>
+            </Card.Content>
+          </Card>
+        </View>
+      );
+    }
+  };
+
+  const getItem = (item) => {
+    // Function for click on an item
+    alert(item[1]);
+  };
+
+  clearAsyncStorage = async () => {
+    AsyncStorage.clear();
+    aptCardNum = 0;
+    medCardNum = 0;
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>{aptCards}</ScrollView>
-      <Button
-        title="Refresh"
-        onPress={() => {
-          setCount(count + 1);
-          AppointmentCardList();
-        }}
-      >
-        Refresh
-      </Button>
-
+      <ScrollView>{dataSource.map(ItemView)}</ScrollView>
+      <Button title='Clear Async' onPress={clearAsyncStorage}></Button>
       <FAB
         style={styles.fab}
         icon="plus"
@@ -303,13 +345,12 @@ function AppointmentsScreen({ navigation }) {
   );
 }
 
-async function SetAppointmentInfo(data) {
+function SetAppointmentInfo(data) {
   //const [data] = AppointmentForm();  //'data' is containing the view of the form
-  cardNum++;
+  aptCardNum++;
   data = JSON.stringify(data);
-  var apptCardNum = "AppointmentDataDict" + cardNum;
-  apptCardNum = JSON.stringify(apptCardNum);
-  await AsyncStorage.setItem(apptCardNum, data);
+  var aptKey = "AppointmentDataDict~" + aptCardNum;
+  AsyncStorage.setItem(aptKey, data);
   console.log(data);
   // data is datatype ReadableNativeMap
 }
@@ -344,7 +385,7 @@ function AppointmentForm({ navigation }) {
             value={value}
           />
         )}
-        name="doctorName"
+        name="Doctor"
         rules={{ required: true }}
         defaultValue=""
       />
