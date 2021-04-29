@@ -531,7 +531,7 @@ function MedicationStackSetUp() {
 
 function MedicationNotif() {
     PushNotification.localNotificationSchedule({
-        title: "Medication Reminder"
+        title: "Medication Reminder",
         message: "Don't forget to take your medication today!", // (required)
         date: new Date(Date.now() + 60*60*24 * 1000), // in 1 day
         allowWhileIdle: true, // (optional) set notification to work while on doze, default: false
@@ -541,8 +541,8 @@ function MedicationNotif() {
 
 function AppointmentNotif() {
     PushNotification.localNotificationSchedule({
-        title: "Upcoming Appointment"
-        message: "You have an upcoming appointment tomorrow! Open MediManage for more details.", // (required)
+        title: "Upcoming Appointment",
+        message: "You have an appointment tomorrow! Open MediManage for more details.", // (required)
         date: new Date(Date.now() + 60*60*24 * 1000), // in 1 day
         allowWhileIdle: true, // (optional) set notification to work while on doze, default: false
       });
