@@ -1,5 +1,5 @@
 //import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -24,50 +24,57 @@ import { NavigationEvents } from "react-navigation";
 //create function that returns a stack nav ( first content is the appt cards )
 
 function HomeScreen() {
-  const phoneIcon = () => <Ionicons name={"call"} size={40} color={"white"}/>;
+  const phoneIcon = () => <Ionicons name={"call"} size={40} color={"white"} />;
 
   return (
-    
-      <View style={{ flex: 1, justifyContent: "flex-start", alignItems: "center", padding: 50 }}>
-        <SwipeButton 
-          onSwipeSuccess={() => Call() }
-          thumbIconComponent={phoneIcon}
-          height={70} width={375}
-          title='Emergency Services'
-          railBackgroundColor='#dedede'
-          railFillBackgroundColor='#949494'
-          railFillBorderColor='#949494'
-          thumbIconBackgroundColor='#ff8400'
-          thumbIconBorderColor='#ff8400'
-        />     
-      </View>    
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "flex-start",
+        alignItems: "center",
+        padding: 50,
+      }}
+    >
+      <SwipeButton
+        onSwipeSuccess={() => Call()}
+        thumbIconComponent={phoneIcon}
+        height={70}
+        width={375}
+        title="Emergency Services"
+        railBackgroundColor="#dedede"
+        railFillBackgroundColor="#949494"
+        railFillBorderColor="#949494"
+        thumbIconBackgroundColor="#ff8400"
+        thumbIconBorderColor="#ff8400"
+      />
+    </View>
   );
 }
 
 function Call() {
-    const debug = true; // does not call phone number in debug mode
+  const debug = false; // does not call phone number in debug mode
 
-    const args = {
-        number: '9085147186',
-        prompt: false // Optional boolean property. Determines if the user should be prompt prior to the call 
-      }
-    
-    if(debug != true) {
-      call(args).catch(console.error);
-    }
-    console.log("Calling Emergency Services...");
+  const args = {
+    number: "9085147186",
+    prompt: false, // Optional boolean property. Determines if the user should be prompt prior to the call
+  };
+
+  if (debug != true) {
+    call(args).catch(console.error);
+  }
+  console.log("Calling Emergency Services...");
 }
 
 function MedicationsScreen({ navigation }) {
   var medCards = [];
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 1; i++) {
     medCards.push(
       <View style={styles.card}>
         <Card onPress={() => console.log("Edit Pressed")}>
           <Card.Content>
-            <Title>Medication {i + 1}</Title>
-            <Paragraph>Content {i + 1}</Paragraph>
+            <Title>Vitamin</Title>
+            <Paragraph>Daily</Paragraph>
           </Card.Content>
         </Card>
       </View>
@@ -93,14 +100,18 @@ function SetMedicationInfo(data) {
   // data is datatype ReadableNativeMap
 }
 
-function MedicationForm() {
+function MedicationForm({ navigation }) {
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => SetMedicationInfo(data);
+  const onSubmit = (data) => {
+    SetMedicationInfo(data);
+    navigation.goBack();
+  };
+  //const onSubmit = (data) => SetMedicationInfo(data);
   //   AsyncStorage.setItem('DataDict', data)
   //   console.log(data)
   // };
@@ -108,10 +119,10 @@ function MedicationForm() {
   return (
     <View>
       <Text></Text>
-      <Text style = {styles.title}>NEW MEDICATION</Text>
+      <Text style={styles.title}>NEW MEDICATION</Text>
       <Text></Text>
       <Text></Text>
-      <Text style = {styles.label}>Medication:</Text>
+      <Text style={styles.label}>Medication:</Text>
       {errors.Medication && <Text>Medication Name is required.</Text>}
       <Controller
         control={control}
@@ -127,7 +138,7 @@ function MedicationForm() {
         rules={{ required: true }}
         defaultValue=""
       />
-      <Text style = {styles.label}>Perscribing Doctor:</Text>
+      <Text style={styles.label}>Perscribing Doctor:</Text>
       {errors.doctorName && <Text>Perscribing doctor is required.</Text>}
       <Controller
         control={control}
@@ -144,7 +155,7 @@ function MedicationForm() {
         defaultValue=""
       />
 
-      <Text style = {styles.label}>Dose:</Text>
+      <Text style={styles.label}>Dose:</Text>
       {errors.dose && <Text>Dose is required.</Text>}
       <Controller
         control={control}
@@ -161,7 +172,7 @@ function MedicationForm() {
         defaultValue=""
       />
 
-      <Text style = {styles.label}>Time:</Text>
+      <Text style={styles.label}>Time:</Text>
       {errors.Time && <Text>Time is required.</Text>}
       <Controller
         control={control}
@@ -178,7 +189,7 @@ function MedicationForm() {
         defaultValue=""
       />
 
-      <Text style = {styles.label}>Refill Date:</Text>
+      <Text style={styles.label}>Refill Date:</Text>
       {errors.Refill && <Text>Refill Date is required.</Text>}
       <Controller
         control={control}
@@ -195,7 +206,7 @@ function MedicationForm() {
         defaultValue=""
       />
 
-      <Text style = {styles.label}>Pharmacy:</Text>
+      <Text style={styles.label}>Pharmacy:</Text>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -210,7 +221,7 @@ function MedicationForm() {
         defaultValue=""
       />
 
-      <Text style = {styles.label}>Notes:</Text>
+      <Text style={styles.label}>Notes:</Text>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -230,23 +241,17 @@ function MedicationForm() {
   );
 }
 
-var cardNum = 0; //Globar varible to keep track of the number of cards
+var aptFinalCards = [];
 
-//Appt screen/apptList with come fron appt stack nav always be the intial contents
-//Appt form will be pushed to stacked when + is pressed
-function AppointmentsScreen({ navigation }) {
-  var aptCards = [];
-  var data;
-  //const {navigate} = this.props.navigation;
-
-  for (let i = 1; i <= 6; i++) {
+async function AppointmentCardList() {
+  for (let i = 1; i <= cardNum; i++) {
     var apptCardNum = "AppointmentDataDict" + i;
     apptCardNum = JSON.stringify(apptCardNum);
-    AsyncStorage.getItem(apptCardNum).then((res) => {
-      data = JSON.parse(res);
+    await AsyncStorage.getItem(apptCardNum).then((res) => {
+      var data = JSON.parse(res);
       console.log(data);
       console.log(data["Doctor"]);
-      aptCards.push(
+      aptFinalCards.push(
         <View style={styles.card}>
           <Card onPress={() => console.log("Edit Pressed")}>
             <Card.Content>
@@ -258,10 +263,36 @@ function AppointmentsScreen({ navigation }) {
       );
     });
   }
+}
 
+var cardNum = 6; //Globar varible to keep track of the number of cards
+
+//Appt screen/apptList with come fron appt stack nav always be the intial contents
+//Appt form will be pushed to stacked when + is pressed
+function AppointmentsScreen({ navigation }) {
+  const [count, setCount] = useState(0);
+  const [aptCards, setCards] = useState([]);
+
+  useEffect(() => {
+    console.log("Refresh");
+    setCards(aptFinalCards);
+    console.log(aptCards);
+  }, [count]);
+
+  
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>{aptCards}</ScrollView>
+      <Button
+        title="Refresh"
+        onPress={() => {
+          setCount(count + 1);
+          AppointmentCardList();
+        }}
+      >
+        Refresh
+      </Button>
+
       <FAB
         style={styles.fab}
         icon="plus"
@@ -298,10 +329,10 @@ function AppointmentForm({ navigation }) {
     //<Button title="Save" onPress={ () => Navigation.goBack() }/>
     <View>
       <Text></Text>
-      <Text style = {styles.title}>NEW APPOINTMENT</Text>
+      <Text style={styles.title}>NEW APPOINTMENT</Text>
       <Text></Text>
       <Text></Text>
-      <Text style = {styles.label}>Doctor:</Text>
+      <Text style={styles.label}>Doctor:</Text>
       {errors.doctorName && <Text>Doctor Name is required.</Text>}
       <Controller
         control={control}
@@ -318,7 +349,7 @@ function AppointmentForm({ navigation }) {
         defaultValue=""
       />
 
-      <Text style = {styles.label}>Field / Specialty:</Text>
+      <Text style={styles.label}>Field / Specialty:</Text>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -333,7 +364,7 @@ function AppointmentForm({ navigation }) {
         defaultValue=""
       />
 
-      <Text style = {styles.label}>Date of Upcoming Appointment:</Text>
+      <Text style={styles.label}>Date of Upcoming Appointment:</Text>
       {errors.Date && <Text>Date is required.</Text>}
       <Controller
         control={control}
@@ -350,7 +381,7 @@ function AppointmentForm({ navigation }) {
         defaultValue=""
       />
 
-      <Text style = {styles.label}>Time:</Text>
+      <Text style={styles.label}>Time:</Text>
       {errors.Time && <Text>Time is required.</Text>}
       <Controller
         control={control}
@@ -367,7 +398,7 @@ function AppointmentForm({ navigation }) {
         defaultValue=""
       />
 
-      <Text style = {styles.label}>Location:</Text>
+      <Text style={styles.label}>Location:</Text>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -382,7 +413,7 @@ function AppointmentForm({ navigation }) {
         defaultValue=""
       />
 
-      <Text style = {styles.label}>Phone:</Text>
+      <Text style={styles.label}>Phone:</Text>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -397,7 +428,7 @@ function AppointmentForm({ navigation }) {
         defaultValue=""
       />
 
-      <Text style = {styles.label}>Notes:</Text>
+      <Text style={styles.label}>Notes:</Text>
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
@@ -412,7 +443,11 @@ function AppointmentForm({ navigation }) {
         defaultValue=""
       />
 
-      <Button title="Save" onPress={handleSubmit(onSubmit)} style={styles.buttonContainer}/>
+      <Button
+        title="Save"
+        onPress={handleSubmit(onSubmit)}
+        style={styles.buttonContainer}
+      />
     </View>
   );
 }
@@ -523,24 +558,24 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   input: {
-    color: 'black',
-    fontSize: 15, 
-    borderColor: 'black',
+    color: "black",
+    fontSize: 15,
+    borderColor: "black",
     borderWidth: 1,
   },
   label: {
-    color: 'red',
-    fontSize: 20, 
+    color: "red",
+    fontSize: 20,
     fontWeight: "bold",
   },
   title: {
-    color: 'red',
-    fontSize: 30, 
+    color: "red",
+    fontSize: 30,
     fontWeight: "bold",
   },
   button: {
     backgroundColor: "red",
     borderRadius: 10,
     paddingVertical: 10,
-  }
+  },
 });
