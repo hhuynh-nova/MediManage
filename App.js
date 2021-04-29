@@ -21,6 +21,8 @@ import { startDetecting } from "react-native/Libraries/Utilities/PixelRatio";
 import { createStackNavigator } from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationEvents } from "react-navigation";
+import { PushNotificationIOS } from '@react-native-community/push-notification-ios';
+import { PushNotification } from 'react-native-push-notification';
 //create function that returns a stack nav ( first content is the appt cards )
 
 function HomeScreen() {
@@ -525,6 +527,25 @@ function MedicationStackSetUp() {
       />
     </MedicationStack.Navigator>
   );
+}
+
+function MedicationNotif() {
+    PushNotification.localNotificationSchedule({
+        title: "Medication Reminder"
+        message: "Don't forget to take your medication today!", // (required)
+        date: new Date(Date.now() + 60*60*24 * 1000), // in 1 day
+        allowWhileIdle: true, // (optional) set notification to work while on doze, default: false
+      });
+    
+}
+
+function AppointmentNotif() {
+    PushNotification.localNotificationSchedule({
+        title: "Upcoming Appointment"
+        message: "You have an upcoming appointment tomorrow! Open MediManage for more details.", // (required)
+        date: new Date(Date.now() + 60*60*24 * 1000), // in 1 day
+        allowWhileIdle: true, // (optional) set notification to work while on doze, default: false
+      });
 }
 
 export default function App() {
