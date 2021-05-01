@@ -190,7 +190,7 @@ function MedicationForm({ navigation }) {
             value={value}
           />
         )}
-        name="Doctor"
+        name="doctorName"
         rules={{ required: true }}
         defaultValue=""
       />
@@ -276,7 +276,10 @@ function MedicationForm({ navigation }) {
         defaultValue=""
       />
 
-      <Button title="Save" onPress={handleSubmit(onSubmit)} />
+      <Button 
+      color = "red"
+      title="Save" 
+      onPress={handleSubmit(onSubmit)} />
     </View>
   );
 }
@@ -303,8 +306,8 @@ function AppointmentsScreen({ navigation }) {
 
   const ItemView = (item, key) => {
     const aptCard = "AppointmentDataDict";
-    console.log(item[0]);
-    console.log(item[1]);
+    //console.log(item[0]);
+    //console.log(item[1]);
 
     if (aptCard == item[0].split("~")[0]) {
       aptCardNum++;
@@ -487,6 +490,7 @@ function AppointmentForm({ navigation }) {
       />
 
       <Button
+        color ="red"
         title="Save"
         onPress={handleSubmit(onSubmit)}
         style={styles.buttonContainer}
