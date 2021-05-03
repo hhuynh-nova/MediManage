@@ -87,8 +87,17 @@ function MedicationsScreen({ navigation }) {
 
   const ItemView = (item, key) => {
     const aptCard = "MedicationDataDict";
-    console.log(item[0]);
-    console.log(item[1]);
+    console.log("Index "+item[0]);
+    console.log("Json"+item[1]);
+    
+    var cardJson = JSON.parse(item[1]);
+   // console.log('cardJson '+ cardJson);
+    var med = cardJson.Medication;
+    var doc = cardJson.doctorName;
+
+    
+    var output =  "Medication: "+ med +"\nDoctor: " + doc;
+    console.log(output);
 
     if (aptCard == item[0].split("~")[0]) {
       medCardNum++;
@@ -97,7 +106,7 @@ function MedicationsScreen({ navigation }) {
         <View key={key} style={styles.card}>
           <Card onPress={() => getItem(item)}>
             <Card.Content>
-              <Title>{item[1]}</Title>
+              <Title>{output}</Title>
               <Paragraph></Paragraph>
             </Card.Content>
           </Card>
