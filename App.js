@@ -90,12 +90,10 @@ function MedicationsScreen({ navigation }) {
     console.log("Index "+item[0]);
     console.log("Json"+item[1]);
     
+    // Json parsing
     var cardJson = JSON.parse(item[1]);
-   // console.log('cardJson '+ cardJson);
     var med = cardJson.Medication;
     var doc = cardJson.doctorName;
-
-    
     var output =  "Medication: "+ med +"\nDoctor: " + doc;
     console.log(output);
 
