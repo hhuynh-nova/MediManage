@@ -70,7 +70,7 @@ function Call() {
   if (debug != true) {
     call(args).catch(console.error);
   }
-  console.log("Calling Emergency Services...");
+  alert("Calling Emergency Services...");
 }
 
 var medCardNum = 0; //Globar varible to keep track of the number of medication cards
