@@ -326,7 +326,7 @@ function AppointmentsScreen({ navigation }) {
     // Json parsing
     var cardJson = JSON.parse(item[1]);
     var doc = cardJson.Doctor;
-    var date = cardJson.date;
+    var date = cardJson.Date;
     var time = cardJson.Time;
     var output =  "Appointment with: "+ doc +"\nDate: " + date + "  @  " + time;
     console.log(output);
