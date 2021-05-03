@@ -49,6 +49,12 @@ function HomeScreen() {
         thumbIconBackgroundColor="#ff8400"
         thumbIconBorderColor="#ff8400"
       />
+      <Text></Text><Text></Text><Text></Text><Text></Text><Text></Text>
+      <Text></Text><Text></Text><Text></Text><Text></Text><Text></Text>
+      <Text></Text><Text></Text><Text></Text><Text></Text><Text></Text>
+      <Text style={styles.title}>Hello.</Text>
+      <Text></Text>
+      <Text style={styles.title}>Welcome to MediManage.</Text>
     </View>
   );
 }
@@ -127,6 +133,7 @@ function MedicationsScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>{dataSource.map(ItemView)}</ScrollView>
+      <Text style={styles.instructions}>Refresh so see new changes</Text>
       <Button title='Clear Async' onPress={clearAsyncStorage}></Button>
       <FAB
         style={styles.fab}
@@ -313,8 +320,16 @@ function AppointmentsScreen({ navigation }) {
 
   const ItemView = (item, key) => {
     const aptCard = "AppointmentDataDict";
-    //console.log(item[0]);
+    console.log(item[0]);
     //console.log(item[1]);
+
+    // Json parsing
+    var cardJson = JSON.parse(item[1]);
+    var doc = cardJson.Doctor;
+    var date = cardJson.date;
+    var time = cardJson.Time;
+    var output =  "Appointment with: "+ doc +"\nDate: " + date + "  @  " + time;
+    console.log(output);
 
     if (aptCard == item[0].split("~")[0]) {
       aptCardNum++;
@@ -323,7 +338,7 @@ function AppointmentsScreen({ navigation }) {
         <View key={key} style={styles.card}>
           <Card onPress={() => getItem(item)}>
             <Card.Content>
-              <Title>{item[1]}</Title>
+              <Title>{output}</Title>
               <Paragraph></Paragraph>
             </Card.Content>
           </Card>
@@ -346,6 +361,7 @@ function AppointmentsScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>{dataSource.map(ItemView)}</ScrollView>
+      <Text style={styles.instructions}>Refresh so see new changes</Text>
       <Button title='Clear Async' onPress={clearAsyncStorage}></Button>
       <FAB
         style={styles.fab}
@@ -650,5 +666,12 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
     borderRadius: 10,
     paddingVertical: 10,
+  },
+  instructions: {
+    fontSize: 20,
+    fontWeight: "bold",
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: 'center',
   },
 });
