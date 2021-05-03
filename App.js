@@ -70,7 +70,8 @@ function Call() {
   if (debug != true) {
     call(args).catch(console.error);
   }
-  console.log("Calling Emergency Services...");
+  //console.log("Calling Emergency Services...");
+  alert("Calling Emergency Services...");
 }
 
 var medCardNum = 0; //Globar varible to keep track of the number of medication cards
@@ -100,8 +101,14 @@ function MedicationsScreen({ navigation }) {
     var cardJson = JSON.parse(item[1]);
     var med = cardJson.Medication;
     var doc = cardJson.doctorName;
+    var dos = cardJson.dose;
+    var tim = cardJson.Time;
+    var rfill = cardJson.Refill;
+    var pharma = cardJson.Pharmacy;
+    var note = cardJson.Notes;
     var output =  "Medication: "+ med +"\nDoctor: " + doc;
-    console.log(output);
+    var cardDisplay = "Medication: "+med+ "\nDoctor: "+doc+"\nDosage: "+dos+"\nTime: "+tim+"\nRefill: "+rfill+"\nPharmacy: "+pharma+"\nNotes: "+note;
+    console.log(cardDisplay);
 
     if (aptCard == item[0].split("~")[0]) {
       medCardNum++;
@@ -121,7 +128,16 @@ function MedicationsScreen({ navigation }) {
 
   const getItem = (item) => {
     // Function for click on an item
-    alert(item[1]);
+    var cardJson = JSON.parse(item[1]);
+    var med = cardJson.Medication;
+    var doc = cardJson.doctorName;
+    var dos = cardJson.dose;
+    var tim = cardJson.Time;
+    var rfill = cardJson.Refill;
+    var pharma = cardJson.Pharmacy;
+    var note = cardJson.Notes;
+    var cardDisplay = "Medication: "+med+ "\nDoctor: "+doc+"\nDosage: "+dos+"\nTime: "+tim+"\nRefill: "+rfill+"\nPharmacy: "+pharma+"\nNotes: "+note;
+    alert(cardDisplay);
   };
 
   clearAsyncStorage = async () => {
@@ -349,7 +365,16 @@ function AppointmentsScreen({ navigation }) {
 
   const getItem = (item) => {
     // Function for click on an item
-    alert(item[1]);
+    var cardJson = JSON.parse(item[1]);
+    var doc = cardJson.Doctor;
+    var spec = cardJson.Specialty;
+    var date = cardJson.Date;
+    var time = cardJson.Time;
+    var loc = cardJson.Location;
+    var pnum = cardJson.Phone;
+    var note = cardJson.Notes;
+    var cardDisplay =  "Appointment: "+ doc +"\nSpecialty: " + spec+"\nDate: " + date + "\nTime: " + time +"\nLocation: " + loc +"\nPhone Number: " + pnum +"\nNotes: " + note;
+    alert(cardDisplay);
   };
 
   clearAsyncStorage = async () => {
