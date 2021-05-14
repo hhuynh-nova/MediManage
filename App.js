@@ -63,7 +63,7 @@ function Call() {
   const debug = false; // does not call phone number in debug mode
 
   const args = {
-    number: "9085147186",
+    number: "911",
     prompt: false, // Optional boolean property. Determines if the user should be prompt prior to the call
   };
 
