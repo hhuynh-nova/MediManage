@@ -1,5 +1,7 @@
 # MediManage
+
 CSC 4810 - Mobile App Development Group Project
+
 Team: Lucas Chen, Hoa Huynh, Louis Pitingolo, Maizie Thurber-Wells
 
 _View the dev branch for code_
